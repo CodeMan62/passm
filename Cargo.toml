@@ -1,0 +1,25 @@
+[package]
+name = "pass"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+rand = "0.8"
+libc = "0.2"
+byteorder = "1.4"
+clipboard = "0.5"
+dirs = "5.0"
+aes = "0.8"
+windows = { version = "0.52", features = ["Win32_Storage_FileSystem", "Win32_Foundation", "Win32_System_WindowsProgramming"] }
+cbc = {  version = "0.1", features = ["std"] }
+scrypt = {  version = "0.11", default-features = false }
+hmac = "0.12"
+sha2 = "0.10"
+ansi_term = "0.12"
+clap = "4.0"
+csv = "1.1"
+tempfile = "3.2"
+rclio = "0.0.3"
+rtoolbox = "0.0" 
