@@ -1,7 +1,8 @@
 use colored::*;
 use dialoguer::{theme::ColorfulTheme, Select};
+use anyhow::Result;
 
-pub fn run() {
+pub fn run() -> Result<()> {
     println!("{}", "Viewing passwords".blue());
     
     // This is a mock-up of stored passwords
@@ -13,7 +14,7 @@ pub fn run() {
 
     if passwords.is_empty() {
         println!("{}", "No passwords saved yet.".yellow());
-        return;
+        return Ok(());
     }
 
     let selections: Vec<String> = passwords
@@ -25,8 +26,7 @@ pub fn run() {
         .with_prompt("Select a password to view")
         .default(0)
         .items(&selections[..])
-        .interact()
-        .unwrap();
+        .interact()?;
 
     let (site, username) = passwords[selection];
     println!("\n{}", "Password details:".green());
@@ -40,6 +40,7 @@ pub fn run() {
     println!("3. Return to main menu");
 
     // Here you would implement the logic for these options
+    Ok(())
 }
 
 

@@ -2,8 +2,9 @@ use crate::ui;
 use colored::*;
 use dialoguer::{theme::ColorfulTheme, Input, Password, Select};
 use zxcvbn::zxcvbn;
+use crate::encryption::Encryption; // Assuming Encryption struct is defined elsewhere
 
-pub fn run() {
+pub fn run(master_password: &str) -> Result<(), Box<dyn std::error::Error>> { // Added Result and error handling
     println!("{}", "Creating a new password entry".blue());
 
     let _site_name: String = Input::with_theme(&ColorfulTheme::default())
@@ -31,10 +32,18 @@ pub fn run() {
         _ => unreachable!(),
     };
 
+    let encryption = Encryption::new(master_password)?;
+    let encrypted = encryption.encrypt(&password)?;
+    println!("Encrypted password: {}", encrypted);
+    let decrypted = encryption.decrypt(&encrypted)?;
+    println!("Decrypted password: {}", decrypted);
+
+
     ui::loading_animation("Saving password securely", 2000);
     println!("{}", "Password saved successfully!".green());
 
     analyze_password(&password);
+    Ok(()) // Return Ok to indicate success
 }
 
 fn generate_password() -> String {
@@ -47,7 +56,7 @@ fn generate_password() -> String {
             CHARSET[idx] as char
         })
         .collect();
-    
+
     println!("{}", "Generated password:".green());
     println!("{}", password);
     password

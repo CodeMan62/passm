@@ -1,21 +1,20 @@
 use colored::*;
 use dialoguer::{theme::ColorfulTheme, Input, Confirm};
 use rand::Rng;
+use anyhow::Result;
 
-pub fn run() {
+pub fn run() -> Result<()> {
     println!("{}", "Generating a secure password".blue());
 
     let length = Input::with_theme(&ColorfulTheme::default())
         .with_prompt("Enter desired password length")
         .default(16)
-        .interact_text()
-        .unwrap();
+        .interact_text()?;
 
     let use_symbols = Confirm::with_theme(&ColorfulTheme::default())
         .with_prompt("Include symbols?")
         .default(true)
-        .interact()
-        .unwrap();
+        .interact()?;
 
     let password = generate_password(length, use_symbols);
 
@@ -24,12 +23,13 @@ pub fn run() {
 
     if Confirm::with_theme(&ColorfulTheme::default())
         .with_prompt("Copy to clipboard?")
-        .interact()
-        .unwrap()
+        .interact()?
     {
         // Here you would implement clipboard functionality
         println!("{}", "Password copied to clipboard.".green());
     }
+
+    Ok(())
 }
 
 fn generate_password(length: usize, use_symbols: bool) -> String {

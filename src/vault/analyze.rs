@@ -1,14 +1,14 @@
 use colored::*;
 use dialoguer::{theme::ColorfulTheme, Password};
 use zxcvbn::zxcvbn;
+use anyhow::Result;
 
-pub fn run() {
+pub fn run() -> Result<()> {
     println!("{}", "Analyze password strength".blue());
 
     let password = Password::with_theme(&ColorfulTheme::default())
         .with_prompt("Enter a password to analyze")
-        .interact()
-        .unwrap();
+        .interact()?;
 
     let estimate = zxcvbn(&password, &[]).unwrap();
     let score = estimate.score();
@@ -39,6 +39,8 @@ pub fn run() {
             }
         }
     }
+
+    Ok(())
 }
 
 
